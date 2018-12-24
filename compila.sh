@@ -1,3 +1,3 @@
-pdflatex relazione.tex
-rm *.aux *.fls *.fdb_latexmk *.out *.toc
-xdg-open relazione.pdf
+pdflatex doc/relazione.tex
+rm *.aux *.fls *.fdb_latexmk *.out *.toc *.log
+xdg-open doc/relazione.pdf
