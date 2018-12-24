@@ -1,0 +1,41 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[english,italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%------Font-----
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+%------Liste------
+\usepackage{enumitem} %lists
+\setlist[enumerate]{itemsep=0.5pt}
+\setlist[itemize]{itemsep=-1pt}
+\setlist[description]{itemsep=0.5pt}
+
+%------Figure------
+\usepackage{graphicx} %img/media
+
+%------Math------
+\usepackage{mathtools} %math package
+\usepackage{amssymb} %pacchetto per i simboli di matematica
+\usepackage{amsmath} %pacchetto di matematica
+\usepackage{amsthm} %pacchetto di matematica\raggedbottom
+
+\usepackage{listings} %coding environment 
+
+%-------Margini------
+\usepackage{geometry}
+\geometry{a4paper,top=3cm,bottom=3cm,left=2.5cm,right=2.5cm,heightrounded}
+\raggedbottom
+
+%------Tabelle------
+\usepackage{booktabs} %toprule e midrule usati al posto di hline
+\usepackage{float} %oggetti mobili(tabelle, figure etc)
+\usepackage{longtable,tabu} %tabelle lunghe su più pagine
+\usepackage{tabularx} %tabelle larghe
+
+%------Indice----
+\usepackage{hyperref} %linkare l indice
+\hypersetup{hidelinks} %nascondere i link dell'indice
