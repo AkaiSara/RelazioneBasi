@@ -111,29 +111,154 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
 \begin{longtable}{p{2.5cm} p{4.5cm} p{2cm} p{5cm}}
     \toprule
     \textbf{Termine} & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti}\\ \midrule
-    Prodotto & Cibo o bevanda presente nel magazzino&&Fornitore, Contabilità, Piatto, Ordine\\ \midrule
+    Prodotto & Cibo o bevanda presente nel magazzino & & Fornitore, Contabilità, Piatto, Ordine \\ \midrule
     Fornitore & Azienda fornitrice di prodotti & & Prodotto \\ \midrule
-    Contabilità & Uscite ed entrate del ristorante&Spesa&Prodotto, Ordine, Personale \\ \midrule
-    Ordine&Ordine effettuato dai clienti&&Contabilità, Piatto, Personale, Tavolo, Prodotto \\ \midrule
-    Piatto&Antipasto, primo, secondo o dessert&&Prodotto, Ordine \\ \midrule
-    Prenotazione&Prenotazione per un tavolo del ristorante&&Tavolo \\ \midrule
-    Tavolo&Tavolo&&Prenotazione, Ordine\\ \midrule
-    Personale&Dipendenti a servizio del locale&Dipendente&Contabilità, Ordine, Turni\\ \midrule
-    Turni&Turni lavorativi dei dipendenti&&Personale	\\ \midrule
+    Contabilità & Uscite ed entrate del ristorante & Spesa & Prodotto, Ordine, Personale \\ \midrule
+    Ordine & Ordine effettuato dai clienti & & Contabilità, Piatto, Personale, Tavolo, Prodotto \\ \midrule
+    Piatto & Antipasto, primo, secondo o dessert & & Prodotto, Ordine \\ \midrule
+    Prenotazione & Prenotazione per un tavolo del ristorante & & Tavolo \\ \midrule
+    Tavolo & Tavolo & & Prenotazione, Ordine\\ \midrule
+    Personale & Dipendenti a servizio del locale & Dipendente & Contabilità, Ordine, Turni\\ \midrule
+    Turni & Turni lavorativi dei dipendenti & & Personale	\\ \midrule
 \end{longtable}
 
-\subsection{Operazioni}
-\subsection{Strutturazione dei requisiti} 
-%progettazione concettuale, elenco puntato entità e relazioni, tipo dell'attributo
+\subsection{Operazioni} %almeno 6 query(o/o procedure, viste), 2 trigger, 2 funzioni
+\begin{description}
+    \item [Operazione 1:]
+    \item [Operazione 2:]
+    \item [Operazione 3:]
+    \item [Operazione 4:]
+    \item [Operazione 5:]
+    \item [Operazione 6:]
+    \item [Operazione 7:]
+    \item [Operazione 8:]
+\end{description}
 
-\begin{longtable}{|p{15cm}|}
+\subsection{Strutturazione dei requisiti} 
+\begin{longtable}{|p{15.5cm}|}
     \hline
     \textbf{Frasi di carattere generale} \\ \hline
     Si vuole realizzare una base di dati che gestisca in maniera efficiente le informazioni relative all’organizzazione del ristorante “La Sofia” a Padova. In particolare si vogliono conoscere i dati relativi a: provviste nel magazzino e nella cantina, contabilità (entrate ed uscite), dipendenti, turni di lavoro e prenotazioni effettuate per il locale. \\ \hline
 \end{longtable}
 
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a prodotto} \\ \hline
+    Ogni prodotto ha: un codice idenficativo progessivo numerico, un nome, una quantità, un prezzo ed un fornitore.\\
+    I prodotti si suddividono in prodotti da frigo, surgelati e prodotti a lunga conservazione
+oppure bevande.
+Una bevanda può essere un vino.
+Ogni vino è caratterizzato da una marca, un’annata e un tipo(rosso fermo, bianco
+fermo, rosè, frizzante, passito o distillato).
+Ogni prodotto viene usato per uno o più piatti.
+Ogni bevanda può essere contenuta in un ordine.
+Ogni prodotto viene acquistato presso un solo fornitore.
+Per ogni prodotto, il prezzo deve corrispondere al relativo costo di un’uscita.
+Per ogni prodotto il nome deve corrispondere ad un ingrediente in almeno un piatto.
+Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza.\\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a fornitore} \\ \hline
+    Ogni fornitore ha: un codice dell'azienda corrispondente alla Partita IVA che lo identifica univocamente, un nome ed un recapito telefonico.\\
+    Il codice dell’azienda deve corrispondere al fornitore di un vino o di un prodotto.
+Ogni fornitore vende uno o più prodotti al ristorante, oppure vende uno o più vini per la
+cantina.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a contabilità} \\ \hline
+    Ogni entrata ed uscita ha: un codice idenficativo progressivo numerico, un costo ed una data.
+    La contabilità comprende sia le entrate che le uscite.\\
+Di ogni uscita deve essere specificata anche la motivazione o causale che ha generato
+il costo. 
+Ogni uscita appartiene ad una spesa effettuata per l’acquisto delle provviste del magazzino.
+Ogni uscita appartiene ad una spesa effettuata per l’acquisto delle provviste per la
+cantina.
+Ogni uscita può costituire un salario dovuto ad un dipendente.
+Il costo deve corrispondere al prezzo di un prodotto o di un vino.
+Ogni entrata fa parte dell’incasso derivante da un’ordine.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a ordine} \\ \hline
+    Ogni ordine ha: un numero corrispondente al tavolo, i piatti, le bevande, il cameriere che serve al tavolo, un totale, il giorno e l'ora. \\
+Ogni ordine è identificato dal numero del tavolo, il giorno e l'ora. 
+Ogni ordine deve comprendere una bevanda che può essere un vino. 
+Ogni ordine è composto da almeno un piatto.  
+Ogni ordine è preso e servito da un cameriere. 
+Il cameriere deve avere un codice fiscale corrispondente a quello di un dipendente. 
+Il totale deve corrispondere ad un'entrata. 
+Il nummero del tavolo deve corrispondere ad un tavolo esiste.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a piatto} \\ \hline
+    Un piatto ha: un codice,un tipo, una serie di ingredienti.
+Il tipo del piatto può essere antipasto, primo, secondo o dessert.
+Ogni piatto è composto da uno o più ingredienti. 
+Ogni ingrediente deve corrispondere ad un prodotto. 
+Il codice deve corrispondere al piatto di un ordine. 
+Ogni piatto può apparire in un ordine.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a prenotazione} \\ \hline
+    Ogni prenotazione ha: un codice prenotazione che la identifica univocamente, un nome del cliente prenotante, il giorno della prenotazione, l'ora della prenotazione, un numero di persone al tavolo. 
+Il numero di persone per tavolo non può superare il numero di coperti disponibili per quel tavolo. 
+Per ogni prenotazione esiste un corrispondente tavolo prenotato.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a tavolo} \\ \hline
+    Ogni tavolo ha: un numero del tavolo che lo identifica univocamente, una quantità di coperti. \\
+Ad un tavolo può corrispondere una prenotazione. 
+Per ogni tavolo può corrispondere un ordine.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a personale} \\ \hline
+    Ogni dipendente ha: un codice fiscale, che identifica ogni dipendente univocamente, un nome ed un cognome, il giorno di riposo, uno stipendio. \\
+    Il personale si divide in cuochi, sommelier o camerieri.
+    Lo stipendio deve corrispondere al costo di un'uscita. 
+    Il giorno di riposo non può corrispondere ad un giorno nei turni di lavoro. 
+    Ogni dipendente non può coprire un turno di lavoro nel suo giorno libero.
+    \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{15.5cm}|}
+    \hline
+    \textbf{Frasi relative a turni di lavoro} \\ \hline
+    Ogni turno di lavoro ha: un codice del dipendente, un giorno ed uno statoche può essere libero o lavorativo. \\
+Ogni turno di lavoro viene identificato univocamente dal codice del dipendente e il giorno.
+Un turno non può essere scoperto nella giornata corrente. 
+Il codice del dipendente deve corrispondere al codice fiscale di quest'ultimo. 
+Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e cena.
+    \\ \hline
+\end{longtable}
+
+%\begin{longtable}{|p{15.5cm}|}
+    %\hline
+    %\textbf{Frasi relative a } \\ \hline
+    %\\ \hline
+%\end{longtable}
+
 \section{Schema concettuale} %Schema ER
 %Immagine
+\includegraphics[width=1.1\textwidth]{doc/schema}
 %Eventuali note
 
 \subsection{Dizionario dei dati}
@@ -163,7 +288,10 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \bottomrule	
 \end{longtable}
 
-\textbf{Lista delle relazioni} %Dalla relazione di La casa del pellegrino
+%Lista delle generalizzazioni
+
+\begin{comment}
+    \textbf{Lista delle relazioni} %Dalla relazione di La casa del pellegrino
 \begin{longtable}{p{2.5cm} p{3cm} p{5.5cm} p{3cm}}
     \midrule
     \textbf{Relazione} & \textbf{Descrizione} & \textbf{Cardinalità} & \textbf{Entità coinvolte} \\ \midrule
@@ -179,6 +307,8 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Svolgimento & Associa il dipendente al turno di lavoro & Un dipendente può svolgere un turno (0,7) \newline Un turno è svolto da almeno un dipendente di ciascuna categoria (3,N) & Personale, Turni \\ \midrule
     Stipendio & Associa lo stipendio del dipendente all'uscita di denaro & Un dipendente genera un'uscita mensile (1,N) \newline Un' uscita è costituita da uno o più stipendi (1,N) & Personale, Uscite \\ \bottomrule
 \end{longtable}
+\end{comment}
+
 
 \textbf{Lista delle relazioni} %Come nel libro
 \begin{longtable}{p{2.5cm} p{5.5cm} p{3.5cm} p{2.5cm}}
@@ -197,5 +327,4 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Stipendio & Associa lo stipendio del dipendente all'uscita di denaro & Dipendente(1,N) \newline Uscita(1,N) &  \\ \bottomrule
 \end{longtable}
 
-%Lista delle generalizzazioni
 %Lista delle regole aziendali / regole di vincolo
