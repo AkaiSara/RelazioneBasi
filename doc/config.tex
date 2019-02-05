@@ -25,7 +25,33 @@
 \usepackage{amsmath} %pacchetto di matematica
 \usepackage{amsthm} %pacchetto di matematica\raggedbottom
 
+%------CodeEnviroment----
 \usepackage{listings} %coding environment 
+\usepackage{xcolor} %define colors
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mysqlStyle}{
+    language=SQL, %linguaggio usato
+    tabsize=4, %spaziatura orizzontale
+    basicstyle=\footnotesize, 
+    frame=lines, %riquadro 
+    columns=[c]fullflexible,
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    numbers=left, %numeri a sinistra
+    commentstyle=\color{codegreen}, %cambio colore commenti
+    keywordstyle=\color{blue}, %parole chiavi
+    stringstyle=\color{red}, %stringhe
+    numberstyle=\color{red}, %numeri a sinistra
+    stepnumber=1, %salto del contatore
+    numbersep=5pt, 
+    aboveskip={1\baselineskip}
+    %morekeywords=[]{delimiter, before, begin, for each}
+}
 
 %-------Margini------
 \usepackage{geometry}

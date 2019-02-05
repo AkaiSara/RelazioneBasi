@@ -39,7 +39,7 @@ CREATE TABLE `prodotto`
 	`CodiceProdotto` integer PRIMARY KEY,
     `NomeProdotto` varchar(20) UNIQUE NOT NULL,
     `Marca` varchar(20),
-    `Quantità` integer NOT NULL CHECK (Quantità >= 0),
+    `quantita` integer NOT NULL CHECK (quantita >= 0),
     `Annata` integer,
     `DataScadenza` date,
     `Categoria` varchar(20) NOT NULL CHECK (Categoria in ('Cibo', 'Bevanda')),
@@ -48,7 +48,7 @@ CREATE TABLE `prodotto`
     `IvaFornitore` varchar(11) NOT NULL
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO prodotto (CodiceProdotto, NomeProdotto, Marca, Quantità, Annata, DataScadenza, Categoria, Tipo, Prezzo, IvaFornitore) VALUES
+INSERT INTO prodotto (CodiceProdotto, NomeProdotto, Marca, quantita, Annata, DataScadenza, Categoria, Tipo, Prezzo, IvaFornitore) VALUES
 (1111 , 'Finocchiona', NULL, 40, NULL, '2019-10-03', 'Cibo', 'Fresco', 8.50, 12345678901),
 (2222, 'Giardiniera', NULL, 3, NULL, '2025-03-04', 'Cibo', 'Lunga Conservazione', 6.80, 12345678901),
 (3333, 'Uova', NULL, 30, NULL, '2019-01-25', 'Cibo', 'Fresco', 1.31, 46274891029),
@@ -269,11 +269,11 @@ INSERT INTO prenotazione (CodicePrenotazione, NumeroCoperti, Cliente, Giorno, Or
 
 -- operazione 1: inserimento nuovo prodotto --
 DELIMITER |
-CREATE PROCEDURE nuovoProdotto (IN codice INTEGER, IN nome VARCHAR(20), IN marca VARCHAR(20), IN quantità INTEGER, IN scadenza DATE, IN annata DATE, IN categoria VARCHAR(20), IN tipo VARCHAR(20), IN prezzo FLOAT, IN fornitore VARCHAR(11))
+CREATE PROCEDURE nuovoProdotto (IN codice INTEGER, IN nome VARCHAR(20), IN marca VARCHAR(20), IN quantita INTEGER, IN scadenza DATE, IN annata DATE, IN categoria VARCHAR(20), IN tipo VARCHAR(20), IN prezzo FLOAT, IN fornitore VARCHAR(11))
 BEGIN
     START TRANSACTION;
-    INSERT INTO prodotto (CodiceProdotto, NomeProdotto, Marca, Quantità, Annata, DataScadenza, Categoria, Tipo, Prezzo, IvaFornitore) VALUES
-    (codice, nome, marca, quantità, annata, scadenza, categoria, tipo, prezzo, fornitore);
+    INSERT INTO prodotto (CodiceProdotto, NomeProdotto, Marca, quantita, Annata, DataScadenza, Categoria, Tipo, Prezzo, IvaFornitore) VALUES
+    (codice, nome, marca, quantita, annata, scadenza, categoria, tipo, prezzo, fornitore);
     COMMIT;
 END |
 DELIMITER ;
@@ -286,18 +286,18 @@ BEGIN
 END |
 DELIMITER ;
 
--- operazione 1bis: modificare la quantità di un prodotto --
+-- operazione 3: modificare la quantita di un prodotto --
 DELIMITER |
-CREATE PROCEDURE modificaQuantità (IN codice INTEGER, IN quantità INTEGER)
+CREATE PROCEDURE modificaquantita (IN codice INTEGER, IN quantita INTEGER)
 BEGIN
     UPDATE prodotto AS P
-    SET P.Quantità = P.Quantità + quantità
+    SET P.quantita = P.quantita + quantita
     WHERE P.CodiceProdotto=codice;
 END |
 DELIMITER ;
     
 
--- operazione 3: inseirsci una nuova prenotazione --
+-- operazione 4: inserimento di una nuova prenotazione --
 DELIMITER |
 CREATE PROCEDURE nuovaPrenotazione (IN codice INTEGER, IN coperti INTEGER, IN nomeCliente VARCHAR(20), IN giorno DATE, IN ora DATE, IN tavolo INTEGER)
 BEGIN
@@ -308,7 +308,7 @@ BEGIN
 END |
 DELIMITER ;
 
--- operazione 4: cancella prenotazione --
+-- operazione 5: cancella prenotazione --
 DELIMITER |
 CREATE PROCEDURE eliminaPrenotazione (IN codice INTEGER)
 BEGIN
@@ -316,7 +316,7 @@ BEGIN
 END |
 DELIMITER ;
 
--- operazione 5: inserisci nuovo dipendente --
+-- operazione 6: inserisci nuovo dipendente --
 DELIMITER |
 CREATE PROCEDURE nuovoDipendente (IN cf VARCHAR(20), IN nome VARCHAR(20), IN cognome VARCHAR(20), IN giorno_libero VARCHAR(10), IN ruolo VARCHAR(20), IN stipendio FLOAT)
 BEGIN
@@ -325,7 +325,7 @@ BEGIN
 END |
 DELIMITER ;
 
--- operazione 6: licenzia dipendente --
+-- operazione 7: licenzia dipendente --
 DELIMITER |
 CREATE PROCEDURE licenziaDipendente (IN dipendente VARCHAR(20))
 BEGIN
@@ -333,16 +333,7 @@ BEGIN
 END |
 DELIMITER ;
 
--- operazione 7A: inserisci un nuovo turno --
-DELIMITER |
-CREATE PROCEDURE inserisciTurno (IN dipendente VARCHAR(20), IN giorno VARCHAR(10))
-BEGIN
-    INSERT INTO svolgimentoTurno (CodiceFiscale, Giorno) VALUES
-    (dipendente, giorno);
-END |
-DELIMITER ;
-
--- operazione 7: modifica turno di lavoro --
+-- operazione 8: modifica turno di lavoro --
 DELIMITER |
 CREATE PROCEDURE modificaTurno (IN giorno VARCHAR(10), IN dipendente VARCHAR(20))
 BEGIN
@@ -351,16 +342,16 @@ BEGIN
 END |
 DELIMITER ;
 
--- operazione 8:  
+-- operazione 9:  
 -- stampa il nome, il codice e la quantità di tutti i cibi con data di scadenza a febbraio 2019 in ordine cresente di data --
 
 CREATE VIEW CibiInScadenza as
-SELECT DISTINCT C.CodiceProdotto, C.NomeProdotto, C.Quantità
+SELECT DISTINCT C.CodiceProdotto, C.NomeProdotto, C.quantita
 FROM prodotto AS C
 WHERE C.Categoria = 'Cibo' AND DataScadenza >= '2019-02-01' AND DataScadenza <= '2019-02-28'
 ORDER BY DataScadenza;
 
--- operazione 9:
+-- operazione 10:
 -- stampa il codice, il nome, la marca e l'annata di tutti i vini con annata risalente a massimo il 2008 e prezzo inferiore a 20 euro
 -- ordinati per prezzo crescente --
 
@@ -370,28 +361,7 @@ FROM prodotto AS V
 WHERE V.Categoria='Bevanda' AND V.Tipo='Vino' AND V.Annata <= 2008 AND V.Prezzo < 20
 ORDER BY Prezzo;
 
--- operazione 10:
--- stampa il nome, il costo e il codice di tutti i prodotti che sono stati acquistati  il giorno 10/01/2019 --
-
-CREATE VIEW speseDiAqcua as
-SELECT DISTINCT P.CodiceProdotto, P.NomeProdotto, P.Prezzo
-FROM prodotto AS P
-WHERE P.Prezzo IN 
-(SELECT DISTINCT U.Costo, U.DataUscita  FROM uscita AS U WHERE U.Causale='Cibo' AND U.Causale='Bevanda' AND U.DataUscita='2019-01-10');
-
 -- operazione 11:
--- stampa il codice e il numero di persone di tutti gli ordini serviti dalla
--- cameriera "Anna Rossi" nel mese di gennaio 2019 nei tavoli prenotati--
-
-CREATE VIEW ordiniServiti as
-SELECT DISTINCT O.CodiceOrdine, O.NumeroPersone
-FROM ordine AS O
-WHERE O.Giorno >= '2019-01-01' AND O.Giorno <= '2019-01-31' AND O.CodiceCameriere IN 
-(SELECT P.CodiceFiscale FROM personale AS P WHERE P.Nome='Anna' AND P.Cognome='Rossi') AND 
-O.NumeroTavolo IN 
-(SELECT Pr.NumeroTavolo FROM prenotazione AS Pr);
-
--- operazione 12:
 -- stampa il numero dei tavoli liberi nel giorno 20/02/2019 con almeno 3 coperti 
 
 CREATE VIEW tavoliLberi as
@@ -400,15 +370,7 @@ FROM tavolo AS T
 WHERE T.Coperti >= 3 AND T.NumeroTavolo NOT IN 
 (SELECT P.NumeroTavolo FROM prenotazione AS P WHERE P.Giorno='2019-02-20');
 
--- operazione 13:
--- stampa il codice, il nome del fornitore e il nome di tutti i cibi che sono di tipo Fresco--
-
-CREATE VIEW prodottiFornitore as
-SELECT DISTINCT P.CodiceProdotto, P.NomeProdotto, F.NomeAzienda
-FROM prodotto AS P, fornitore AS F
-WHERE P.Tipo='Fresco' AND P.Categoria='Cibo';
-
--- operazione 14:
+-- operazione 12:
 -- stampa nome e cognome di tutti i dipendenti di turno il lunedì --
 
 CREATE VIEW dipendentiDiTurno as
@@ -416,7 +378,7 @@ SELECT DISTINCT P.Nome, P.Cognome
 FROM personale AS P, svolgimentoTurno AS T
 WHERE T.CodiceFiscale=P.CodiceFiscale AND T.Giorno = 'Lunedì';
 
--- operazione 15:
+-- operazione 13:
 -- calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite --
 
 DELIMITER |
@@ -440,8 +402,8 @@ BEGIN
     
 END |
 
--- operazione 16:
--- determina, in base al numero di ordini giornalieri serviti in un mese, la promozione o meno di un cameriere --
+-- operazione 14:
+-- trova il cameriere che effettua più ordini in media al giorno per decidere se promuoverlo o no --
 
 CREATE FUNCTION promozione (mese DATE, cameriere VARCHAR(20)) RETURNS BOOL
 BEGIN

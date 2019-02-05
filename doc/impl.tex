@@ -1,52 +1,233 @@
 \section{Implementazione}
-
-
-%\subsection{Tabelle} Le tabelle del database rispecchiano totalmente le relazioni dello schema logico-relazionale.
-%Sono presenti, dunque, \textbf{numero} tabelle. La loro implementazione è presente nel file `'.sql` consegnato. %sostituisci numero con il numero effettivo delle tabelle
-
 %devono contenere: descrizione testuale, codice, l'output(solo per query/procedure)
-
 \subsection{Query} %almeno 6 query, di cui alcune possono essere procedure
+\begin{lstlisting}[title=Operazione 9, style=mysqlStyle] 
+-- stampa il nome, il codice e la quantita di tutti i cibi con data di scadenza a febbraio 2019 in ordine cresente di data --
+
+CREATE VIEW CibiInScadenza as
+SELECT DISTINCT C.CodiceProdotto, C.NomeProdotto, C.Quantita
+FROM prodotto AS C
+WHERE C.Categoria = 'Cibo' AND DataScadenza >= '2019-02-01' AND DataScadenza <= '2019-02-28'
+ORDER BY DataScadenza;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 10, style=mysqlStyle]
+-- stampa il codice, il nome, la marca e l'annata di tutti i vini con annata risalente a massimo il 2008 e prezzo inferiore a 20 euro
+-- ordinati per prezzo crescente --
+
+CREATE VIEW viniEconomici as
+SELECT DISTINCT V.CodiceProdotto, V.NomeProdotto, V.Marca, V.Annata
+FROM prodotto AS V
+WHERE V.Categoria='Bevanda' AND V.Tipo='Vino' AND V.Annata <= 2008 AND V.Prezzo < 20
+ORDER BY Prezzo;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 11, style=mysqlStyle]
+-- stampa il numero dei tavoli liberi nel giorno 20/02/2019 con almeno 3 coperti 
+
+CREATE VIEW tavoliLberi as
+SELECT T.NumeroTavolo
+FROM tavolo AS T
+WHERE T.Coperti >= 3 AND T.NumeroTavolo NOT IN 
+(SELECT P.NumeroTavolo FROM prenotazione AS P WHERE P.Giorno='2019-02-20');
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 12, style=mysqlStyle]
+-- stampa nome e cognome di tutti i dipendenti di turno il lunedi --
+
+CREATE VIEW dipendentiDiTurno as
+SELECT DISTINCT P.Nome, P.Cognome
+FROM personale AS P, svolgimentoTurno AS T
+WHERE T.CodiceFiscale=P.CodiceFiscale AND T.Giorno = 'Lunedi';
+\end{lstlisting}
+
 \subsubsection{Procedure}
+\begin{lstlisting}[title=Operazione 1, style=mysqlStyle]
+-- operazione 1: inserimento nuovo prodotto --
+DELIMITER |
+CREATE PROCEDURE nuovoProdotto (IN codice INTEGER, IN nome VARCHAR(20), IN marca VARCHAR(20), IN quantita INTEGER, IN scadenza DATE, IN annata DATE, IN categoria VARCHAR(20), IN tipo VARCHAR(20), IN prezzo FLOAT, IN fornitore VARCHAR(11))
+BEGIN
+    START TRANSACTION;
+    INSERT INTO prodotto (CodiceProdotto, NomeProdotto, Marca, Quantita, Annata, DataScadenza, Categoria, Tipo, Prezzo, IvaFornitore) VALUES
+    (codice, nome, marca, quantita, annata, scadenza, categoria, tipo, prezzo, fornitore);
+    COMMIT;
+END |
+DELIMITER ;
+\end{lstlisting}
 
-\begin{comment}
-    operazione 1: inserimento di un nuovo prodotto
-    operazione 2: cancellazione di un nuovo prodotto
-    operazione 10: inserisci nuova prenotazione
-    operazione 11: cancella prenotazione
-    operazione 13: inserisci nuovo dipendente
-    operazione 14: licenzia dipendente
-    operazione 15: modifica lo stipendio del dipendente 
-    operazione 17: modifica turno di lavoro
+\begin{lstlisting}[title=Operazione 2, style=mysqlStyle]
+-- operazione 2: cencellazione di un prodotto --
+DELIMITER |
+CREATE PROCEDURE eliminaProdotto (IN codice INTEGER)
+BEGIN
+    DELETE FROM prodotto WHERE CodiceProdotto=codice;
+END |
+DELIMITER ;
+\end{lstlisting}
 
-    operazione 3: stampa il nome e la quantità di tutti i cibi con data di scadenza al 10/12/2016
-    opearzione 4: stampa la marca e il tipo di tutti i  vini o superalcolici, con annata risalente al 1987
-    opearzione 5: stampa nome e PartitaIVA di tutti i fornitori che vendono almeno 2 cibi con tipo "fresco"
-    opearzione 6: stampa il codice e il costo di tutte le uscite con causale "acqua" in data 3/6/2015
-    opearzione 7: stampa il codice e il costo di tutte le entrate del giorno 21/10/2016
-    opearzione 8: stampa il codice e il numero di persone di tutti gli ordini serviti dalla cameriera "Anna" il giorno 15/04/2015 al tavolo "18" 
-    operazione 9: stampa il numero di tutti i tavoli prenotati il giorno 31/12/2016 
-    operazione 12: stampa il codice di tutte le prenotazioni per il tavolo numero 5 il giorno 24/08/2015
-    operazione 16: stampa nome cognome di tutti i dipendenti di turno il lunedì
-\end{comment}
+\begin{lstlisting}[title=Operazione 3, style=mysqlStyle]
+--modificare la quantita di un prodotto --
+DELIMITER |
+CREATE PROCEDURE modificaQuantita (IN codice INTEGER, IN quantita INTEGER)
+BEGIN
+    UPDATE prodotto AS P
+    SET P.Quantita = P.Quantita + quantita
+    WHERE P.CodiceProdotto=codice;
+END |
+DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 4, style=mysqlStyle]
+-- operazione 4: inserimento di una nuova prenotazione --
+DELIMITER |
+CREATE PROCEDURE nuovaPrenotazione (IN codice INTEGER, IN coperti INTEGER, IN nomeCliente VARCHAR(20), IN giorno DATE, IN ora DATE, IN tavolo INTEGER)
+BEGIN
+    START TRANSACTION;
+    INSERT INTO prenotazione(CodicePrenotazione, NumeroCoperti, Cliente, Giorno, Ora, NumeroTavolo) VALUES
+    (codice, coperti, nomeCliente, giorno, ora, tavolo);
+    COMMIT;
+END |
+DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 5, style=mysqlStyle]
+-- operazione 5: cancellazione di una prenotazione --
+DELIMITER |
+CREATE PROCEDURE eliminaPrenotazione (IN codice INTEGER)
+BEGIN
+    DELETE FROM prenotazione WHERE CodicePrenotazione=codice;
+END |
+DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 6, style=mysqlStyle]
+-- operazione 6: inserisci nuovo dipendente --
+DELIMITER |
+CREATE PROCEDURE nuovoDipendente (IN cf VARCHAR(20), IN nome VARCHAR(20), IN cognome VARCHAR(20), IN giorno_libero VARCHAR(10), IN ruolo VARCHAR(20), IN stipendio FLOAT)
+BEGIN
+    INSERT INTO personale (CodiceFiscale, Nome, Cognome, GiornoLibero, Ruolo, Stipendio) VALUES
+    (cf, nome, cognome, giorno_libero, ruolo, stipendio);
+END |
+DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 7, style=mysqlStyle]
+-- operazione 7: licenzia dipendente --
+DELIMITER |
+CREATE PROCEDURE licenziaDipendente (IN dipendente VARCHAR(20))
+BEGIN
+    DELETE FROM personale WHERE CodiceFiscale=dipendente;
+END |
+DELIMITER ;
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 8, style=mysqlStyle]
+    -- operazione 8: modifica turno di lavoro --
+DELIMITER |
+CREATE PROCEDURE modificaTurno (IN giorno VARCHAR(10), IN dipendente VARCHAR(20))
+BEGIN
+    UPDATE svolgimento_turno SET CodiceFiscale=dipendente
+    WHERE Giorno=giorno;
+END |
+DELIMITER ;
+\end{lstlisting}
 
 \subsection{Funzioni} %almeno 2 funzioni
+\begin{lstlisting}[title=Operazione 13, style=mysqlStyle]
+-- calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite --
 
-\begin{comment}
-    operazione 18: calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite
-    operazione 19: trova il cameriere che effettua più ordini in media al giorno per decidere se promuoverlo o no
-\end{comment}
+DELIMITER |
+CREATE FUNCTION guadagnoTot (mese DATE) RETURNS FLOAT
+BEGIN 
+    DECLARE Guadagno FLOAT;
+    DECLARE entrate FLOAT;
+    DECLARE uscite FLOAT;
+    
+    SELECT SUM(U.Costo) INTO uscite
+    FROM uscita AS U
+    WHERE U.DataUscita >= '2019' + MONTH(mese) + '01' AND U.DataUscita <= '2019' + MONTH(mese) + '31';
+    
+    SELECT SUM(E.Costo) INTO entrate 
+    FROM entrata AS E
+    WHERE E.DataEntrata >= '2019' + MONTH(mese) + '01' AND E.DataEntrata <= '2019' + MONTH(mese) + '31';
+    
+    SET Guadagno = entrate-uscite;
+    
+    RETURN Guadagno;
+    
+END |
+\end{lstlisting}
+
+\begin{lstlisting}[title=Operazione 14, style=mysqlStyle]
+-- trova il cameriere che effettua piu ordini in media al giorno per decidere se promuoverlo o no --
+
+CREATE FUNCTION promozione (mese DATE, cameriere VARCHAR(20)) RETURNS BOOL
+BEGIN
+    DECLARE ordini INTEGER;
+    DECLARE promozione BOOL;
+    
+    SELECT COUNT(*) INTO ordini
+    FROM ordine AS O
+    WHERE O.CodiceCameriere=cameriere AND O.Giorno >= '2019' + MONTH(mese) + '01' AND O.giorno <= '2019' + MONTH(mese) + '31';
+    
+    IF ordini >= 20 THEN SET promozione=true;
+    ELSE SET promozione=FALSE;
+    END IF;
+    
+    RETURN promozione;
+    
+END |
+\end{lstlisting}
 
 \subsection{Trigger} %almeno 2 trigger
-\paragraph{Regola di vincolo 1}
-\paragraph{Regola di vincolo 2}
-\paragraph{Regola di vincolo 3}
+\begin{lstlisting}[title=Regola di vincolo 1, style=mysqlStyle]
+-- un dipendente non puo lavorare nel suo giorno libero--
+CREATE TRIGGER noGiorniLiberi
+BEFORE INSERT ON svolgimentoTurno
+FOR EACH ROW
+BEGIN
+    DECLARE giornoLibero VARCHAR(10);
+    
+    SELECT P.GiornoLibero INTO giornoLibero
+    FROM personale AS P;
+    
+    IF giornoLibero NOT IN (SELECT T.Giorno FROM personale AS P, svolgimentoTurno AS T WHERE P.CodiceFiscale=T.CodiceFiscale)
+    THEN CALL modificaTurno(new.giorno, new.dipendente);
+    END IF;
+END |
+DELIMITER ;
+\end{lstlisting}
 
+\begin{lstlisting}[title=Regola di vincolo 2, style=mysqlStyle]
+-- un dipendente non puo svolgere piu di 6 turni a settimana --
+DELIMITER |
+CREATE TRIGGER MaxTurni
+BEFORE INSERT ON svolgimentoTurno
+FOR EACH ROW
+BEGIN
+    DECLARE turni INTEGER;
+    
+    SELECT COUNT(CodiceFiscale) INTO turni
+    FROM svolgimentoTurno
+    WHERE CodiceFiscale=new.CodiceFiscale;
+    
+    IF turni <= 6 THEN CALL inserisciTurno;
+    END IF;
+    
+END |
+DELIMITER ;
+\end{lstlisting}
 
-\begin{comment}
-    Un dipendente non può svolgere più di 6 turni a settimana.
-    Un cliente non può prenotare un tavolo già prenotato.
-    Il numero del tavolo deve essere compreso tra 1 e 35.
-    La quantità del prodotto non può essere negativa.
-\end{comment}
-
+\begin{lstlisting}[title=Regola di vincolo 3, style=mysqlStyle]
+-- Un cliente non puo prenotare un tavolo gia prenotato. --
+DELIMITER |
+CREATE TRIGGER tavoliPrenotati
+BEFORE INSERT ON prenotazione
+FOR EACH ROW
+BEGIN
+    IF new.tavolo NOT IN (SELECT P.tavolo FROM prenotazione AS P)
+    THEN CALL inserisciPrenotazione;
+    END IF;
+END |
+DELIMITER ;
+\end{lstlisting}
