@@ -13,10 +13,6 @@ Di ciascun \textbf{prodotto} si vuole sapere:
 Un prodotto può essere o un cibo o una bevanda. \\
 Un cibo può essere fresco, a lunga conservazione o surgelato. Per ogni cibo si vuole sapere anche la data di scadenza. \\
 Una bevanda, di cui si vuole sapere la marca, può essere non alcolica o alcolica. Gli alcolici si dividono in vini e superalcolici. Per entrambi si vuole sapere sia l’annata che il tipo. \\
-Per i vini i tipi possono essere rosso, bianco fermo, rosè, frizzante, passito. Per i superalcolici i tipi sono grappa, amaro, whisky, rum, aperol.\\
-Ogni prodotto viene acquistato presso un solo fornitore.\\
-Per ogni prodotto, il prezzo deve corrispondere al relativo costo di un'uscita. \\
-Per ogni prodotto il nome deve corrispondere ad un ingrediente in almeno un piatto. \\
 Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza. \medskip \\
 Per quanto riguarda i rifornimenti, per ogni \textbf{fornitore} si vuole sapere:
 \begin{itemize}
@@ -24,8 +20,6 @@ Per quanto riguarda i rifornimenti, per ogni \textbf{fornitore} si vuole sapere:
     \item Nome azienda
     \item Recapito telefonico
 \end{itemize}
-Il codice dell'azienda deve corrispondere al fornitore di un prodotto. \\
-Ogni fornitore vende uno o più prodotti al ristorante. \medskip \\
 Riguardo alla contabilità, di ogni \textbf{uscita ed entrata} si vuole sapere:
 \begin{itemize}
     \item Codice identificativo progessivo numerico
@@ -34,10 +28,8 @@ Riguardo alla contabilità, di ogni \textbf{uscita ed entrata} si vuole sapere:
 \end{itemize}
 La contabilità comprende sia le entrate che le uscite. \\
 Di ogni uscita deve essere specificata anche la motivazione o causale che ha generato il costo. \\
-Ogni uscita appartiene ad una spesa effettuata per l'acquisto delle provviste del magazzino. \\
-Ogni uscita può costituire un salario dovuto ad un dipendente. \\
-Il costo deve corrispondere al prezzo di un prodotto. \\
-Ogni entrata fa parte dell'incasso derivante da un'ordine. \medskip \\
+Ogni uscita può corrispondere o all'acquisto di un prodotto o al salario di un dipendente. \\
+Ogni entrata corrisponde ad un eventuale incasso derivante da un'ordine. \medskip \\
 Di ogni \textbf{Ordine} si vuole sapere:
 \begin{itemize}
     \item Numero tavolo 
@@ -48,10 +40,7 @@ Di ogni \textbf{Ordine} si vuole sapere:
     \item Ora
 \end{itemize}
 Ogni ordine è identificato dal numero del tavolo, il giorno e l'ora. \\
-Ogni ordine è preso e servito da un cameriere. \\
-Il cameriere deve avere un codice fiscale corrispondente a quello di un dipendente. \\
-Il totale deve corrispondere ad un'entrata. \\
-Il nummero del tavolo deve corrispondere ad un tavolo esiste. \medskip \\
+Ogni ordine è preso e servito da un cameriere. \medskip \\
 Per le \textbf{prenotazioni} effettuate per il locale si vuole sapere:
 \begin{itemize}
     \item Numero del tavolo
@@ -61,15 +50,12 @@ Per le \textbf{prenotazioni} effettuate per il locale si vuole sapere:
     \item Numero di persone al tavolo
 \end{itemize}
 Ogni prenotazione è identificata univocamente da giorno, ora e numero del tavolo. \\
-Il numero di persone per tavolo non può superare il numero di coperti disponibili per quel tavolo. \\ 
-Per ogni prenotazione esiste un corrispondente tavolo prenotato. \medskip \\ 
-Di ogni \textbf{Tavolo}:
+Il numero di persone per tavolo non può superare il numero di coperti disponibili per quel tavolo. \medskip \\ 
+Di ogni \textbf{Tavolo} si vuole sapere:
 \begin{itemize}
     \item Numero del tavolo che lo identifica univocamente
     \item Quantità di coperti disponibili
 \end{itemize}
-Ad un tavolo può corrispondere una prenotazione. \\
-Per ogni tavolo può corrispondere un ordine. \medskip \\
 Riguardo al \textbf{personale} invece si vuole sapere:
 \begin{itemize}
     \item Codice fiscale, che identifica ogni dipendente univocamente
@@ -79,9 +65,7 @@ Riguardo al \textbf{personale} invece si vuole sapere:
     \item Stipendio
 \end{itemize}
 Il personale si divide in cuochi, sommelier o camerieri.\\
-Lo stipendio deve corrispondere al costo di un'uscita. \\
 Il giorno di riposo non può corrispondere ad un giorno nei turni di lavoro. \\
-Ogni dipendente non può coprire un turno di lavoro nel suo giorno libero. \\
 Solo i camerieri possono servire ai tavoli. \medskip \\
 Riguardo ai \textbf{turni di lavoro} all’interno del locale, si vuole sapere:
 \begin{itemize}
@@ -89,15 +73,13 @@ Riguardo ai \textbf{turni di lavoro} all’interno del locale, si vuole sapere:
     \item Giorno
 \end{itemize}
 Ogni turno di lavoro viene identificato univocamente dal giorno.\\
-Un turno non può essere scoperto nella giornata corrente. \\
-Il codice del dipendente deve corrispondere al codice fiscale di quest'ultimo. \\
 Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e cena.
 \subsection{Glossario dei termini}
 \begin{longtable}{p{2.5cm} p{5.5cm} p{2cm} p{4cm}}
     \toprule
     \textbf{Termine} & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti}\\ \midrule
     Prodotto & Cibo o bevanda presente nel magazzino & Provviste & Fornitore, Contabilità \\ \midrule
-    Fornitore & Azienda fornitrice di prodotti & & Prodotto \\ \midrule
+    Fornitore & Azienda fornitrice di prodotti & Azienda & Prodotto \\ \midrule
     Contabilità & Uscite ed entrate del ristorante & Spesa & Prodotto, Ordine, Personale \\ \midrule
     Ordine & Ordine effettuato dai clienti ad un determinato tavolo & & Contabilità, Personale, Tavolo \\ \midrule
     Prenotazione & Prenotazione per un tavolo del ristorante & & Tavolo \\ \midrule
@@ -136,16 +118,12 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \textbf{Frasi relative a prodotto} \\ \hline
     Ogni prodotto ha: un codice idenficativo progessivo numerico, un nome, una quantità, un prezzo ed un fornitore.\\
     Un prodotto può essere o un cibo o una bevanda.
-    Un cibo può essere fresco, a lunga conservazione o surgelato. Per ogni cibo si vuole
-    sapere anche la data di scadenza.
+    Un cibo può essere fresco, a lunga conservazione o surgelato.
     Una bevanda, di cui si vuole sapere la marca, può essere non alcolica o alcolica. Gli
     alcolici si dividono in vini e superalcolici. Per entrambi si vuole sapere sia l’annata che
     il tipo.
     Per i vini i tipi possono essere rosso, bianco fermo, rosè, frizzante, passito. Per i
     superalcolici i tipi sono grappa, amaro, whisky, rum, aperol.
-    Ogni prodotto viene acquistato presso un solo fornitore.
-    Per ogni prodotto, il prezzo deve corrispondere al relativo costo di un’uscita.
-    Per ogni prodotto il nome deve corrispondere ad un ingrediente in almeno un piatto.
     Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza.\\ \hline
 \end{longtable}
 
@@ -153,7 +131,6 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \hline
     \textbf{Frasi relative a fornitore} \\ \hline
     Ogni fornitore ha: un codice dell'azienda corrispondente alla Partita IVA che lo identifica univocamente, un nome ed un recapito telefonico.\\
-    Il codice dell’azienda deve corrispondere al fornitore di un prodotto.
     Ogni fornitore vende uno o più prodotti al ristorante.
     \\ \hline
 \end{longtable}
@@ -165,10 +142,8 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     La contabilità comprende sia le entrate che le uscite.
     Di ogni uscita deve essere specificata anche la motivazione o causale che ha generato
     il costo.
-    2Ogni uscita appartiene ad una spesa effettuata per l’acquisto delle provviste del magazzino.
-    Ogni uscita può costituire un salario dovuto ad un dipendente.
-    Il costo deve corrispondere al prezzo di un prodotto.
-    Ogni entrata fa parte dell’incasso derivante da un’ordine.
+    Ogni uscita può corrispondere o all’acquisto di un prodotto o al salario di un dipendente.
+    Ogni entrata corrisponde ad un eventuale incasso derivante da un’ordine.
     \\ \hline
 \end{longtable}
 
@@ -178,9 +153,6 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Ogni ordine ha: un numero corrispondente al tavolo, il numero di persone per tavolo il cameriere che serve al tavolo, un totale, il giorno e l'ora. \\
     Ogni ordine è identificato dal numero del tavolo, il giorno e l’ora.
     Ogni ordine è preso e servito da un cameriere.
-    Il cameriere deve avere un codice fiscale corrispondente a quello di un dipendente.
-    Il totale deve corrispondere ad un’entrata.
-    Il nummero del tavolo deve corrispondere ad un tavolo esiste.
     \\ \hline
 \end{longtable}
 
@@ -191,7 +163,6 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Ogni prenotazione è identificata univocamente da giorno, ora e numero del tavolo.
     Il numero di persone per tavolo non può superare il numero di coperti disponibili per
     quel tavolo.
-    Per ogni prenotazione esiste un corrispondente tavolo prenotato.
     \\ \hline
 \end{longtable}
 
@@ -199,7 +170,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \hline
     \textbf{Frasi relative a tavolo} \\ \hline
     Ogni tavolo ha: un numero del tavolo che lo identifica univocamente, una quantità di coperti. \\
-    Ad un tavolo può corrispondere una prenotazione. 
+    Ad un tavolo può corrispondere una prenotazione. %tolgo?
     Per ogni tavolo può corrispondere un ordine.
     \\ \hline
 \end{longtable}
@@ -209,8 +180,6 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \textbf{Frasi relative a personale} \\ \hline
     Ogni dipendente ha: un codice fiscale, che identifica ogni dipendente univocamente, un nome ed un cognome, il giorno di riposo, uno stipendio. \\
     Il personale si divide in cuochi, sommelier o camerieri.
-    Lo stipendio deve corrispondere al costo di un’uscita.
-    Il giorno di riposo non può corrispondere ad un giorno nei turni di lavoro.
     Ogni dipendente non può coprire un turno di lavoro nel suo giorno libero.
     Solo i camerieri possono servire ai tavoli.
     \\ \hline
@@ -221,17 +190,9 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \textbf{Frasi relative a turni di lavoro} \\ \hline
     Ogni turno di lavoro ha: un codice del dipendente ed un giorno. \\
     Ogni turno di lavoro viene identificato univocamente dal giorno.
-    Un turno non può essere scoperto nella giornata corrente.
-    Il codice del dipendente deve corrispondere al codice fiscale di quest’ultimo.
     Ogni turno di lavoro comprende l’intera giornata, senza distinzione tra pranzo e cena.
     \\ \hline
 \end{longtable}
-
-%\begin{longtable}{|p{15.5cm}|}
-    %\hline
-    %\textbf{Frasi relative a } \\ \hline
-    %\\ \hline
-%\end{longtable}
 
 \section{Schema concettuale} %Schema ER
 %Immagine
@@ -270,26 +231,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \bottomrule	
 \end{longtable}
 
-\begin{comment}
-    \textbf{Lista delle relazioni} %Dalla relazione di La casa del pellegrino
-\begin{longtable}{p{2.5cm} p{3cm} p{5.5cm} p{3cm}}
-    \midrule
-    \textbf{Relazione} & \textbf{Descrizione} & \textbf{Cardinalità} & \textbf{Entità coinvolte} \\ \midrule
-    Vendita & Associa il prodotto al suo fornitore & Un prodotto è venduto da un solo fornitore (1,1) \newline Un fornitore vende uno o più prodotti (1,N) & Prodotto, Fornitore \\ \midrule
-    Creazione & Associa il prodotto al piatto & Un prodotto crea uno o più piatti (1,N) \newline Un piatto è creato da almeno un prodotto (1,N) & Prodotto, Piatto \\ \midrule
-    Costo & Associa il prezzo del prodotto all'uscita di denaro & Un prodotto costituisce una o più uscite (1,N) \newline Un uscita è costituita da uno o più prodotti (1,N) & Prodotto, Uscite \\ \midrule
-    Appartenenza & Associa la bevanda all'ordine & Una bevanda può appartenere ad uno o più ordini (0,N) \newline Un ordine contiene almeno una bevanda (1,N) & Bevanda, Ordine \\ \midrule
-    Composizione & Associa il piatto all'ordine & Un piatto può comporre uno o più ordini (0,N) \newline Un ordine è composto da almeno un piatto (1,N) & Piatto, Ordine \\ \midrule
-    Incasso & Associa l'ordine all'entrata di denaro & Un ordine genera una sola entrata (1,1) \newline Un'entrata è generata da un solo ordine (1,1) & Ordine, Entrate \\ \midrule
-    Associazione & Associa l'ordine al tavolo & Un ordine è associato ad un solo tavolo (1,1) \newline Un tavolo può essere associato ad uno o più ordini (0,N) & Ordine, Tavolo \\ \midrule
-    Riservazione & Associa il tavolo alla prenotazione & Un tavolo può essere riservato da uno o più clienti (0,N) \newline Una prenotazione riserva un solo tavolo (1,1) & Tavolo, Prenotazione \\ \midrule
-    Servizio & Associa l'ordine al cameriere & Un ordine viene servito da un solo cameriere (1,1) \newline Un cameriere serve uno o più ordini (1,N) & Ordine, Cameriere \\ \midrule
-    Svolgimento & Associa il dipendente al turno di lavoro & Un dipendente può svolgere un turno (0,7) \newline Un turno è svolto da almeno un dipendente di ciascuna categoria (3,N) & Personale, Turni \\ \midrule
-    Stipendio & Associa lo stipendio del dipendente all'uscita di denaro & Un dipendente genera un'uscita mensile (1,N) \newline Un' uscita è costituita da uno o più stipendi (1,N) & Personale, Uscite \\ \bottomrule
-\end{longtable}
-
-\end{comment}
-\textbf{Lista delle relazioni} %Come nel libro
+\textbf{Lista delle relazioni} 
 \begin{longtable}{p{2.5cm} p{5.5cm} p{3.5cm} p{2.5cm}}
     \midrule
     \textbf{Relazione} & \textbf{Descrizione} & \textbf{Cardinalità} & \textbf{Attributi} \\ \midrule
