@@ -70,12 +70,12 @@ Solo i camerieri possono servire ai tavoli. \medskip \\
 Riguardo ai \textbf{turni di lavoro} all’interno del locale, si vuole sapere:
 \begin{itemize}
     \item Codice del dipendente
-    \item Giorno
+    \item Giorno, che lo identifica univocamente
 \end{itemize}
-Ogni turno di lavoro viene identificato univocamente dal giorno.\\
 Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e cena.
+
 \subsection{Glossario dei termini}
-\begin{longtable}{p{2.5cm} p{5.5cm} p{2cm} p{4cm}}
+\begin{longtable}{p{2.5cm} p{6cm} p{2cm} p{5.5cm}}
     \toprule
     \textbf{Termine} & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti}\\ \midrule
     Prodotto & Cibo o bevanda presente nel magazzino & Provviste & Fornitore, Contabilità \\ \midrule
@@ -88,32 +88,30 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Turni & Turni lavorativi dei dipendenti & & Personale	\\ \midrule
 \end{longtable}
 
-\subsection{Operazioni} %almeno 6 query(o/o procedure, viste), 2 trigger, 2 funzioni
+\subsection{Operazioni}
 \begin{description}
-    \item [Operazione 1:] inserimento di un nuovo prodotto
-    \item [Operazione 2:] cancellazione di un nuovo prodotto
-    \item [Operazione 3:] modificare la quantità di un prodotto
-    \item [Operazione 4:] inserimento di una nuova prenotazione
-    \item [Operazione 5:] cancellazione di una prenotazione
-    \item [Operazione 6:] inserimento di un nuovo dipendente
-    \item [Operazione 7:] licenziamento di un dipendente
-    \item [Operazione 8:] modifica di un turno di lavoro 
-    \item [Operazione 9:] stampa il nome, il codice e la quantità di tutti i cibi con data di scadenza a febbraio 2019 in ordine crescente di data
-    \item [Operazione 10:] stampa il codice, il nome, la marca e l’annata di tutti i vini con annata risalente a massimo il 2008 e prezzo inferiore a 20 euro ordinati per prezzo crescente
-    \item [Operazione 11:] stampa il numero dei tavoli liberi nel giorno 20/02/2019 con almeno 3 coperti 
-    \item [Operazione 12:] stampa nome e cognome di tutti i dipendenti di turno il lunedì
-    \item [Operazione 13:] calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite
-    \item [Operazione 14:] trova il cameriere che effettua più ordini in media al giorno per decidere se promuoverlo o no
+    \item [Operazione 1:] inserimento di un nuovo prodotto.
+    \item [Operazione 2:] modificare la quantità di un prodotto.
+    \item [Operazione 3:] inserimento di una nuova prenotazione.
+    \item [Operazione 4:] cancellazione di una prenotazione.
+    \item [Operazione 5:] inserimento di un nuovo dipendente.
+    \item [Operazione 6:] modifica di un turno di lavoro .
+    \item [Operazione 7:] stampare il codice, nome e quantità di tutti i prodotti che sono cibi e che scadono entro il 28 febbraio 2019, che inoltre iniziano con la R, ordinati in modo decrescente.
+    \item [Operazione 8:] stampa il codice, il nome, la marca e l’annata di tutti i vini con annata risalente a massimo il 2008 e prezzo inferiore a 20 euro ordinati per prezzo crescente.
+    \item [Operazione 9:] stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 o 4 coperti.
+    \item [Operazione 10:] stampa nome e cognome di tutti i dipendenti di turno il martedì.
+    \item [Operazione 11:] calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite.
+    \item [Operazione 12:] trova il cameriere che effettua più ordini in media al giorno per decidere se promuoverlo o no.
 \end{description}
 
 \subsection{Strutturazione dei requisiti} 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17cm}|}
     \hline
     \textbf{Frasi di carattere generale} \\ \hline
     Si vuole realizzare una base di dati che gestisca in maniera efficiente le informazioni relative all’organizzazione del ristorante “La Sofia” a Padova. In particolare si vogliono conoscere i dati relativi a provviste nel magazzino e nella cantina, contabilità (entrate ed uscite), dipendenti, turni di lavoro e prenotazioni effettuate per il locale. \\ \hline
 \end{longtable}
 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{ 17cm}|}
     \hline
     \textbf{Frasi relative a prodotto} \\ \hline
     Ogni prodotto ha: un codice idenficativo progessivo numerico, un nome, una quantità, un prezzo ed un fornitore.\\
@@ -127,7 +125,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza.\\ \hline
 \end{longtable}
 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17cm}|}
     \hline
     \textbf{Frasi relative a fornitore} \\ \hline
     Ogni fornitore ha: un codice dell'azienda corrispondente alla Partita IVA che lo identifica univocamente, un nome ed un recapito telefonico.\\
@@ -135,7 +133,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \\ \hline
 \end{longtable}
 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17cm}|}
     \hline
     \textbf{Frasi relative a contabilità} \\ \hline
     Ogni entrata ed uscita ha: un codice idenficativo progressivo numerico, un costo ed una data.\\
@@ -147,7 +145,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \\ \hline
 \end{longtable}
 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a ordine} \\ \hline
     Ogni ordine ha: un numero corrispondente al tavolo, il numero di persone per tavolo il cameriere che serve al tavolo, un totale, il giorno e l'ora. \\
@@ -156,7 +154,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \\ \hline
 \end{longtable}
 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a prenotazione} \\ \hline
     Ogni prenotazione ha: un nome del cliente prenotante, il giorno della prenotazione, l'ora della prenotazione, un numero di persone al tavolo. 
@@ -166,16 +164,15 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     \\ \hline
 \end{longtable}
 
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a tavolo} \\ \hline
     Ogni tavolo ha: un numero del tavolo che lo identifica univocamente, una quantità di coperti. \\
-    Ad un tavolo può corrispondere una prenotazione. %tolgo?
+    Ad un tavolo può corrispondere una prenotazione. 
     Per ogni tavolo può corrispondere un ordine.
     \\ \hline
 \end{longtable}
-
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a personale} \\ \hline
     Ogni dipendente ha: un codice fiscale, che identifica ogni dipendente univocamente, un nome ed un cognome, il giorno di riposo, uno stipendio. \\
@@ -184,8 +181,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Solo i camerieri possono servire ai tavoli.
     \\ \hline
 \end{longtable}
-
-\begin{longtable}{|p{15.5cm}|}
+\begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a turni di lavoro} \\ \hline
     Ogni turno di lavoro ha: un codice del dipendente ed un giorno. \\
@@ -198,7 +194,6 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
 %Immagine
 \includegraphics[width=1\textwidth]{doc/schema}
 \subsection{Dizionario dei dati}
-
 \textbf{Regole di vincolo} 
 \begin{itemize}
     \item Un dipendente non può svolgere più di 6 turni a settimana.
@@ -208,7 +203,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
 \end{itemize}
 
 \textbf{Lista delle entità}
-\begin{longtable}{p{2.5cm} p{4cm} p{5cm} p{2.5cm}}
+\begin{longtable}{p{2.5cm} p{5.5cm} p{5.5cm} p{2.5cm}}
     \toprule
     \textbf{Entità} & \textbf{Descrizione} &   \textbf{Attributi} & \textbf{Identificatore}\\ \midrule
     Prodotto & Provvista del magazzino & CodiceProd, NomeProdotto, Quantità & CodiceProd\\ \midrule
@@ -230,9 +225,8 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Turno & Turno di lavoro & Giorno & Giorno\\ 
     \bottomrule	
 \end{longtable}
-
 \textbf{Lista delle relazioni} 
-\begin{longtable}{p{2.5cm} p{5.5cm} p{3.5cm} p{2.5cm}}
+\begin{longtable}{p{2.5cm} p{7.5cm} p{3.5cm} p{2.5cm}}
     \midrule
     \textbf{Relazione} & \textbf{Descrizione} & \textbf{Cardinalità} & \textbf{Attributi} \\ \midrule
     Vendita & Associa il prodotto al suo fornitore & Prodotto(1,1) \newline Fornitore(1,N) &  \\ \midrule

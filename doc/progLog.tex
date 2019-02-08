@@ -17,11 +17,11 @@
 \includegraphics[width=1\textwidth]{doc/schemaLogico}
 \subsection{Schema logico-relazionale} %Tabella(Attributi, .. )
 \textbf{Fornitore}(\underline{PartitaIVA}, NomeAzienda, Telefono), \\ \smallskip
-\textbf{Prodotto}(\underline{CodiceProdotto}, Categoria, Marca, Tipo, Annata, DataScadenza, NomeProdotto, Quantita, IVAFornitore, Prezzo), \\ \smallskip
+\textbf{Prodotto}(\underline{CodiceProdotto}, NomeProdotto, Categoria, Marca, Tipo, Annata, DataScadenza, Quantita, IVAFornitore, Prezzo), \\ \smallskip
 \textbf{Uscita}(\underline{CodiceUscita},Costo, Data, Causale), \\ \smallskip
 \textbf{Stipendio}( \underline{CodiceUscita}, \underline{CodiceFiscale} ), \\ \smallskip
 \textbf{Entrata}(\underline{CodiceEntrata}, Costo, Data), \\ \smallskip
-\textbf{Personale}(\underline{CodiceFiscale}, Nome, Cognome, Ruolo, GiornoLibero, Stipendio), \\ \smallskip
+\textbf{Personale}(\underline{CodiceFiscale}, Nome, Cognome, Ruolo, GiornoLibero), \\ \smallskip
 \textbf{Turno}(\underline{Giorno}), \\ \smallskip
 \textbf{Svolgimento}(\underline{Giorno}, \underline{CodiceFiscale}), \\ \smallskip
 \textbf{Ordine}(\underline{CodiceOrdine}, NumeroPersone, Giorno, Ora, ContoTotale, NumeroTavolo, CodiceCameriere), \\ \smallskip 
