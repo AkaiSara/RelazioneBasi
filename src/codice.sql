@@ -1,5 +1,3 @@
-CREATE DATABASE IF NOT EXISTS LaSofiaDB;
-USE LaSofiaDB;
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS fornitore;
@@ -23,34 +21,32 @@ CREATE TABLE `fornitore`
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO fornitore (PartitaIva, NomeAzienda, Telefono) VALUES 
-(12345678901, 'Crocini', 049875634), 
-(46274891029, 'Frutti di Giorgi', 0498713542),
-(89231473829, 'SunMarket', 0498736453), 
-(47361904938, 'Belli Freschi', 0498746352), 
-(36271849284, 'Il Pescatore', 0498715986), 
-(09876543217, 'My American Market', 056281792), 
-(37281930273, 'CantinaVeneta', 0498725021);  
+('12345678901', 'Crocini', '049875634'), 
+('46274891029', 'Frutti di Giorgi', '049871354'),
+('89231473829', 'SunMarket', '049873645'), 
+('47361904938', 'Belli Freschi', '049874635'), 
+('36271849284', 'Il Pescatore', '049871598'), 
+('09876543217', 'My American Market', '056281792'), 
+('37281930273', 'CantinaVeneta', '049872502');  
 
 -- tabella prodotto --
 
 CREATE TABLE `prodotto`
 (
-	`CodiceProdotto` bigint PRIMARY KEY,
-    `NomeProdotto` varchar(20) UNIQUE NOT NULL,
+  `CodiceProdotto` bigint PRIMARY KEY,
+    `NomeProdotto` varchar(20)  NOT NULL,
     `Marca` varchar(20),
     `Quantita` integer NOT NULL CHECK (Quantita >= 0),
     `Annata` bigint,
     `DataScadenza` date,
     `Categoria` varchar(20) NOT NULL CHECK (Categoria in ('Cibo', 'Bevanda')),
     `Tipo` varchar(20) NOT NULL,
-    `Prezzo` decimal(8,2) NOT NULL
-    `IvaFornitore` char(11) NOT NULL,
-    FOREIGN KEY (IvaFornitore) REFERENCES fornitore(PartitaIva), 
-    FOREIGN KEY (Prezzo) REFERENCES uscita(CodiceUscita)  
+    `Prezzo` decimal(8,2) NOT NULL REFERENCES uscita(Costo),
+    `IvaFornitore` char(11) NOT NULL REFERENCES fornitore(PartitaIva)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO prodotto (CodiceProdotto, NomeProdotto, Marca, Quantita, Annata, DataScadenza, Categoria, Tipo, Prezzo, IvaFornitore) VALUES
-(1000 , 'Finocchiona', NULL, 40, NULL, '2019-10-03', 'Cibo', 'Fresco', 8.50, '12345678901'),
+(1000, 'Finocchiona', NULL, 40, NULL, '2019-10-03', 'Cibo', 'Fresco', 8.50, '12345678901'),
 (1100, 'Giardiniera', NULL, 3, NULL, '2025-03-04', 'Cibo', 'Lunga Conservazione', 6.80, '12345678901'),
 (1200, 'Uova', NULL, 30, NULL, '2019-01-25', 'Cibo', 'Fresco', 1.31, '46274891029'),
 (1300, 'Spinaci', NULL, 5, NULL, '2019-02-26', 'Cibo', 'Fresco', 2.02, '89231473829'),
@@ -127,7 +123,7 @@ CREATE TABLE `stipendio`
   `CodiceFiscale` char(16) NOT NULL,
   FOREIGN KEY (CodiceUscita) REFERENCES uscita(CodiceUscita),
   FOREIGN KEY (CodiceFiscale) REFERENCES personale(CodiceFiscale),
-   PRIMARY KEY (CodiceUscita, CodiceFiscale)
+  PRIMARY KEY (CodiceUscita, CodiceFiscale)
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO stipendio (CodiceUscita, CodiceFiscale) VALUES
@@ -171,71 +167,78 @@ CREATE TABLE `personale`
   `Cognome` varchar(20) NOT NULL,
   `GiornoLibero` varchar(10) NOT NULL,
   `Ruolo` varchar(20) NOT NULL CHECK (ruolo in ('Cuoco', 'Cameriere', 'Sommelier')),
+  `Stipendio` bigint NOT NULL,
   UNIQUE(Nome, Cognome)
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO personale (CodiceFiscale, Nome, Cognome, GiornoLibero, Ruolo) VALUES
-('RGHNNA26R87T245R', 'Anna', 'Rossi', 'Martedì', 'Cameriere'),
-('TNEGGT75R32Z356W', 'Massimo', 'Bertocco', 'Mercoledì', 'Cuoco'),
-('CSFMSY23S51T224G', 'Gianni', 'Banzato', 'Lunedì', 'Sommelier'),
-('PTISSG56F42T777D', 'Maria', 'Franceschi', 'Giovedì', 'Cameriere'),
-('GGWYYR42R61K999S', 'Fabio', 'Marchi', 'Venerdì', 'Cuoco');
+INSERT INTO personale (CodiceFiscale, Nome, Cognome, GiornoLibero, Ruolo, Stipendio) VALUES
+('RGHNNA26R87T245R', 'Anna', 'Rossi', 'Martedì', 'Cameriere', 1500),
+('TNEGGT75R32Z356W', 'Massimo', 'Bertocco', 'Mercoledì', 'Cuoco', 3000),
+('CSFMSY23S51T224G', 'Gianni', 'Banzato', 'Lunedì', 'Sommelier', 3000),
+('PTISSG56F42T777D', 'Maria', 'Franceschi', 'Giovedì', 'Cameriere', 1500),
+('GGWYYR42R61K999S', 'Fabio', 'Marchi', 'Venerdì', 'Cuoco', 1500);
 
 -- tabella turno --
 
 CREATE TABLE `turno` 
 (
-  `Giorno` varchar(10) PRIMARY KEY
+  `Giorno` varchar(10),
+  `DataTurno` date NOT NULL PRIMARY KEY
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO turno (Giorno) VALUES
-('Lunedì'),
-('Martedì'),
-('Mercoledì'),
-('Giovedì'),
-('Venerdì'),
-('Sabato'),
-('Domenica');
+INSERT INTO turno (Giorno, DataTurno) VALUES
+('Lunedì', '2019-01-01'),
+('Martedì', '2019-01-02'),
+('Mercoledì', '2019-01-03'),
+('Giovedì', '2019-01-04'),
+('Venerdì', '2019-01-05'),
+('Sabato', '2019-01-06'),
+('Domenica', '2019-01-07'),
+('Lunedì', '2019-01-08'),
+('Martedì', '2019-01-09'),
+('Mercoledì', '2019-01-10'),
+('Giovedì', '2019-01-11'),
+('Venerdì', '2019-01-12'),
+('Sabato', '2019-01-13'),
+('Domenica', '2019-01-14');
 
 -- tabella svolgimento turno --
 
 CREATE TABLE `svolgimento_turno` 
 (
-  `CodiceFiscale` char(16) NOT NULL,
-  `Giorno` varchar(10) NOT NULL,
-  PRIMARY KEY (CodiceFiscale, Giorno),
-  FOREIGN KEY (CodiceFiscale) REFERENCES personale(CodiceFiscale),
-  FOREIGN KEY (Giorno) REFERENCES turno(Giorno),
+  `CodiceFiscale` char(16) NOT NULL REFERENCES personale(CodiceFiscale),
+  `DataTurno` date NOT NULL REFERENCES turno(DataTurno),
+  PRIMARY KEY (CodiceFiscale, DataTurno)
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO svolgimento_turno (CodiceFiscale, Giorno) VALUES
-('RGHNNA26R87T245R', 'Lunedì'),
-('RGHNNA26R87T245R', 'Mercoledì'),
-('RGHNNA26R87T245R', 'Giovedì'),
-('RGHNNA26R87T245R', 'Venerdì'),
-('RGHNNA26R87T245R', 'Sabato'),
-('RGHNNA26R87T244R', 'Domenica'),
-('TNEGGT75R32Z356W', 'Lunedì'),
-('TNEGGT75R32Z356W', 'Martedì'),
-('TNEGGT75R32Z356W', 'Giovedì'),
-('TNEGGT75R32Z356W', 'Venerdì'),
-('TNEGGT75R32Z356W', 'Sabato'),
-('CSFMSY23S51T224G', 'Martedì'),
-('CSFMSY23S51T224G', 'Mercoledì'),
-('CSFMSY23S51T224G', 'Giovedì'),
-('CSFMSY23S51T224G', 'Venerdì'),
-('CSFMSY23S51T224G', 'Sabato'),
-('CSFMSY23S51T224G', 'Domenica'),
-('PTISSG56F42T777D', 'Martedì'),
-('PTISSG56F42T777D', 'Mercoledì'),
-('PTISSG56F42T777D', 'Sabato'),
-('PTISSG56F42T777D', 'Domenica'),
-('GGWYYR42R61K999S', 'Lunedì'),
-('GGWYYR42R61K999S', 'Martedì'),
-('GGWYYR42R61K999S', 'Mercoledì'),
-('GGWYYR42R61K999S', 'Giovedì'),
-('GGWYYR42R61K999S', 'Sabato'),
-('GGWYYR42R61K999S', 'Domenica');
+INSERT INTO svolgimento_turno (CodiceFiscale, DataTurno) VALUES
+('RGHNNA26R87T245R', '2019-01-01'),
+('RGHNNA26R87T245R', '2019-01-03'),
+('RGHNNA26R87T245R', '2019-01-04'),
+('RGHNNA26R87T245R', '2019-01-05'),
+('RGHNNA26R87T245R', '2019-01-06'),
+('RGHNNA26R87T244R', '2019-01-07'),
+('TNEGGT75R32Z356W', '2019-01-01'),
+('TNEGGT75R32Z356W', '2019-01-02'),
+('TNEGGT75R32Z356W', '2019-01-04'),
+('TNEGGT75R32Z356W', '2019-01-05'),
+('TNEGGT75R32Z356W', '2019-01-06'),
+('CSFMSY23S51T224G', '2019-01-02'),
+('CSFMSY23S51T224G', '2019-01-03'),
+('CSFMSY23S51T224G', '2019-01-04'),
+('CSFMSY23S51T224G', '2019-01-05'),
+('CSFMSY23S51T224G', '2019-01-06'),
+('CSFMSY23S51T224G', '2019-01-07'),
+('PTISSG56F42T777D', '2019-01-02'),
+('PTISSG56F42T777D', '2019-01-03'),
+('PTISSG56F42T777D', '2019-01-06'),
+('PTISSG56F42T777D', '2019-01-07'),
+('GGWYYR42R61K999S', '2019-01-01'),
+('GGWYYR42R61K999S', '2019-01-02'),
+('GGWYYR42R61K999S', '2019-01-03'),
+('GGWYYR42R61K999S', '2019-01-04'),
+('GGWYYR42R61K999S', '2019-01-06'),
+('GGWYYR42R61K999S', '2019-01-07');
 
 -- tabella ordine --
 
@@ -243,14 +246,11 @@ CREATE TABLE `ordine`
 (
   `CodiceOrdine` bigint PRIMARY KEY,
   `NumeroPersone` integer NOT NULL,
-  `Giorno` date NOT NULL,
+  `Giorno` date NOT NULL REFERENCES entrata(DataEntrata),
   `Ora` time NOT NULL,
   `ContoTotale` decimal(8,2) NOT NULL,
-  `NumeroTavolo` integer NOT NULL,
-  `CodiceCameriere` char(16) NOT NULL,
-  FOREIGN KEY (CodiceCameriere) REFERENCES personale(CodiceFiscale),
-  FOREIGN KEY (NumeroTavolo) REFERENCES tavolo(NumeroTavolo),
-  FOREIGN KEY (ContoTotale) REFERENCES entrate(CodiceEntrata)
+  `NumeroTavolo` integer NOT NULL REFERENCES tavolo(NumeroTavolo),
+  `CodiceCameriere` char(16) NOT NULL REFERENCES personale(CodiceFiscale)
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO ordine (CodiceOrdine, NumeroPersone, Giorno, Ora, ContoTotale, NumeroTavolo, CodiceCameriere) VALUES
@@ -266,7 +266,6 @@ INSERT INTO ordine (CodiceOrdine, NumeroPersone, Giorno, Ora, ContoTotale, Numer
 (12354, 4, '2019-01-12', '13:15:00', 59.39, 20, 'RGHNNA26R87T245R'),
 (12355, 4, '2019-01-20', '19:30:00', 56.86, 7, 'TNEGGT75R32Z356W'),
 (12356, 2, '2019-01-14', '20:20:00', 25.30, 16, 'TNEGGT75R32Z356W');
-
 -- tabella tavolo --
 
 CREATE TABLE `tavolo` 
@@ -306,11 +305,11 @@ CREATE TABLE `prenotazione`
   `Cliente` varchar(20) NOT NULL,
   `Giorno` date NOT NULL,
   `Ora` time NOT NULL,
-  `NumeroTavolo` integer NOT NULL,
-   FOREIGN KEY (NumeroTavolo) REFERENCES tavolo(NumeroTavolo)
+  `numeroTavolo` integer NOT NULL,
+   FOREIGN KEY (numeroTavolo) REFERENCES tavolo(NumeroTavolo)
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO prenotazione (CodicePrenotazione, NumeroCoperti, Cliente, Giorno, Ora, NumeroTavolo) VALUES
+INSERT INTO prenotazione (CodicePrenotazione, NumeroCoperti, Cliente, Giorno, Ora, numeroTavolo) VALUES
 (11111, 4, 'Marisa', '2019-02-20', '13:00:00', 10),
 (22222, 3, 'Elisa', '2019-02-20', '13:30:00', 7),
 (33333, 2, 'Anna', '2019-02-20', '12:00:00', 6),
@@ -339,14 +338,16 @@ END |
 DELIMITER ;
 
 -- operazione 2: modificare la quantita di un prodotto --
+
 DELIMITER |
-CREATE PROCEDURE modificaquantita (IN codice INTEGER, IN quantita INTEGER)
+CREATE PROCEDURE modificaQuantita (IN codiceProd INTEGER, IN quantita INTEGER)
 BEGIN
     UPDATE prodotto AS P
-    SET P.quantita = P.quantita + quantita
-    WHERE P.CodiceProdotto=codice;
+    SET P.Quantita = P.Quantita + quantita
+    WHERE P.CodiceProdotto=codice; 
 END |
 DELIMITER ;
+
     
 
 -- operazione 3: inserimento di una nuova prenotazione --
@@ -354,23 +355,24 @@ DELIMITER |
 CREATE PROCEDURE nuovaPrenotazione (IN codice INTEGER, IN coperti INTEGER, IN nomeCliente VARCHAR(20), IN giorno DATE, IN ora DATE, IN tavolo INTEGER)
 BEGIN
     START TRANSACTION;
-    INSERT INTO prenotazione(CodicePrenotazione, NumeroCoperti, Cliente, Giorno, Ora, NumeroTavolo) VALUES
+    INSERT INTO prenotazione(CodicePrenotazione, NumeroCoperti, Cliente, Giorno, Ora, numeroTavolo) VALUES
     (codice, coperti, nomeCliente, giorno, ora, tavolo);
     COMMIT;
 END |
 DELIMITER ;
 
 -- operazione 4: cancella prenotazione --
+-- solo se la prenotazione è successiva alla data corrente (current date) --
 DELIMITER |
 CREATE PROCEDURE eliminaPrenotazione (IN codice INTEGER)
 BEGIN
-    DELETE FROM prenotazione WHERE CodicePrenotazione=codice;
+    DELETE FROM prenotazione WHERE CodicePrenotazione=codice AND Giorno > CURDATE();
 END |
 DELIMITER ;
 
 -- operazione 5: inserisci nuovo dipendente --
 DELIMITER |
-CREATE PROCEDURE nuovoDipendente (IN cf VARCHAR(20), IN nome VARCHAR(20), IN cognome VARCHAR(20), IN giorno_libero VARCHAR(10), IN ruolo VARCHAR(20), IN stipendio FLOAT)
+CREATE PROCEDURE nuovoDipendente (IN cf VARCHAR(20), IN nome VARCHAR(20), IN cognome VARCHAR(20), IN giorno_libero VARCHAR(10), IN ruolo VARCHAR(20), IN stipendio BIGINT)
 BEGIN
     INSERT INTO personale (CodiceFiscale, Nome, Cognome, GiornoLibero, Ruolo, Stipendio) VALUES
     (cf, nome, cognome, giorno_libero, ruolo, stipendio);
@@ -380,10 +382,10 @@ DELIMITER ;
 
 -- operazione 6: modifica turno di lavoro --
 DELIMITER |
-CREATE PROCEDURE modificaTurno (IN giorno VARCHAR(10), IN dipendente VARCHAR(20))
+CREATE PROCEDURE modificaTurno (IN dataTurno date, IN dipendente VARCHAR(20))
 BEGIN
     UPDATE svolgimento_turno SET CodiceFiscale=dipendente
-    WHERE Giorno=giorno;
+    WHERE DataTurno=dataTurno;
 END |
 DELIMITER ;
 
@@ -407,20 +409,26 @@ WHERE V.Categoria='Bevanda' AND V.Tipo='Vino' AND V.Annata <= 2008 AND V.Prezzo 
 ORDER BY V.Prezzo;
 
 -- operazione 9:
--- stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 o 4 coperti --
+-- stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 o 5 coperti --
+
+CREATE VIEW tavoli3o5Coperti as
+SELECT DISTINCT T.NumeroTavolo AS num
+FROM tavolo AS T JOIN prenotazione AS P ON T.NumeroTavolo = P.numeroTavolo
+WHERE T.Coperti <> 3 OR T.Coperti <> 5 AND P.Giorno='2019-03-20';
 
 CREATE VIEW tavoliLiberi as
 SELECT T.NumeroTavolo
 FROM tavolo AS T
-WHERE T.NumeroTavolo NOT IN (SELECT P.NumeroTavolo FROM prenotazione AS P WHERE P.Giorno='2019-02-20') AND T.Coperti > 4 OR T.Coperti < 3;
+WHERE T.NumeroTavolo NOT IN (SELECT num FROM tavoli3o5Coperti) ;
 
 -- operazione 10:
--- stampa nome e cognome di tutti i dipendenti di turno il martedi --
-
+-- stampa nome e cognome di tutti i dipendenti di turno il martedi raggruppati per ruolo il cui stipendio medio è maggiore di 2000 --
 CREATE VIEW dipendentiDiTurno as
 SELECT DISTINCT P.Nome, P.Cognome
-FROM personale AS P, svolgimento_turno AS T
-WHERE T.CodiceFiscale=P.CodiceFiscale AND T.Giorno = 'Martedì';
+FROM personale AS P, svolgimento_turno AS T, turno AS Tr
+WHERE T.CodiceFiscale=P.CodiceFiscale AND Tr.Giorno = 'Martedì' AND Tr.DataTurno=T.DataTurno
+GROUP BY P.Ruolo
+HAVING P.Stipendio >= 2000;
 
 -- operazione 11:
 -- calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite --
@@ -478,7 +486,7 @@ BEGIN
     FROM personale AS P;
     
     IF giornoLibero NOT IN (SELECT T.Giorno FROM personale AS P, svolgimentoTurno AS T WHERE P.CodiceFiscale=T.CodiceFiscale)
-    THEN CALL modificaTurno(new.giorno, new.dipendente);
+    THEN CALL modificaTurno(new.dataTurno, new.dipendente);
     END IF;
 END |
 DELIMITER ;

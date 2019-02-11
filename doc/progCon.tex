@@ -13,13 +13,14 @@ Di ciascun \textbf{prodotto} si vuole sapere:
 Un prodotto può essere o un cibo o una bevanda. \\
 Un cibo può essere fresco, a lunga conservazione o surgelato. Per ogni cibo si vuole sapere anche la data di scadenza. \\
 Una bevanda, di cui si vuole sapere la marca, può essere non alcolica o alcolica. Gli alcolici si dividono in vini e superalcolici. Per entrambi si vuole sapere sia l’annata che il tipo. \\
-Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza. \medskip \\
+Ogni prodotto è acquistato presso un solo fornitore di fiducia. \medskip \\
 Per quanto riguarda i rifornimenti, per ogni \textbf{fornitore} si vuole sapere:
 \begin{itemize}
     \item Partita IVA che lo identifica univocamente
     \item Nome azienda
     \item Recapito telefonico
 \end{itemize}
+Un fornitore può vendere più di un prodotto al ristorante.\medskip \\
 Riguardo alla contabilità, di ogni \textbf{uscita ed entrata} si vuole sapere:
 \begin{itemize}
     \item Codice identificativo progessivo numerico
@@ -27,9 +28,9 @@ Riguardo alla contabilità, di ogni \textbf{uscita ed entrata} si vuole sapere:
     \item Data
 \end{itemize}
 La contabilità comprende sia le entrate che le uscite. \\
-Di ogni uscita deve essere specificata anche la motivazione o causale che ha generato il costo. \\
+Per ogni uscita deve essere specificata anche la motivazione o causale che ha generato il costo. \\
 Ogni uscita può corrispondere o all'acquisto di un prodotto o al salario di un dipendente. \\
-Ogni entrata corrisponde ad un eventuale incasso derivante da un'ordine. \medskip \\
+Ogni entrata corrisponde all'incasso derivante da un'ordine. \medskip \\
 Di ogni \textbf{Ordine} si vuole sapere:
 \begin{itemize}
     \item Numero tavolo 
@@ -41,7 +42,7 @@ Di ogni \textbf{Ordine} si vuole sapere:
 \end{itemize}
 Ogni ordine è identificato dal numero del tavolo, il giorno e l'ora. \\
 Ogni ordine è preso e servito da un cameriere. \medskip \\
-Per le \textbf{prenotazioni} effettuate per il locale si vuole sapere:
+Per le \textbf{prenotazioni} effettuate dai clineti si vuole sapere:
 \begin{itemize}
     \item Numero del tavolo
     \item Giorno della prenotazione
@@ -70,10 +71,11 @@ Solo i camerieri possono servire ai tavoli. \medskip \\
 Riguardo ai \textbf{turni di lavoro} all’interno del locale, si vuole sapere:
 \begin{itemize}
     \item Codice del dipendente
-    \item Giorno, che lo identifica univocamente
+    \item Giorno della settimana
+    \item Data, che lo identifica univocamente
 \end{itemize}
-Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e cena.
-
+Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e cena.\newline
+In ogni turno di lavoro devono essere presenti almeno un cuoco, un cameriere ed un sommelier. 
 \subsection{Glossario dei termini}
 \begin{longtable}{p{2.5cm} p{6cm} p{2cm} p{5.5cm}}
     \toprule
@@ -82,26 +84,26 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Fornitore & Azienda fornitrice di prodotti & Azienda & Prodotto \\ \midrule
     Contabilità & Uscite ed entrate del ristorante & Spesa & Prodotto, Ordine, Personale \\ \midrule
     Ordine & Ordine effettuato dai clienti ad un determinato tavolo & & Contabilità, Personale, Tavolo \\ \midrule
-    Prenotazione & Prenotazione per un tavolo del ristorante & & Tavolo \\ \midrule
+    Prenotazione & Prenotazione di un tavolo del ristorante & & Tavolo \\ \midrule
     Tavolo & Tavolo & & Prenotazione, Ordine\\ \midrule
     Personale & Dipendenti a servizio del locale & Dipendente & Contabilità, Ordine, Turni\\ \midrule
-    Turni & Turni lavorativi dei dipendenti & & Personale	\\ \midrule
+    Turno & Turno lavorativo dei dipendenti & & Personale	\\ \midrule
 \end{longtable}
 
 \subsection{Operazioni}
 \begin{description}
     \item [Operazione 1:] inserimento di un nuovo prodotto.
-    \item [Operazione 2:] modificare la quantità di un prodotto.
+    \item [Operazione 2:] modificare la quantita di un prodotto, se la quantità è 0 allora viene aumentata generando una nuova uscita (viene gestito da un'altra procedura).
     \item [Operazione 3:] inserimento di una nuova prenotazione.
-    \item [Operazione 4:] cancellazione di una prenotazione.
+    \item [Operazione 4:] cancella prenotazione solo se la prenotazione è successiva alla data corrente.
     \item [Operazione 5:] inserimento di un nuovo dipendente.
-    \item [Operazione 6:] modifica di un turno di lavoro .
+    \item [Operazione 6:] modifica di un turno di lavoro.
     \item [Operazione 7:] stampare il codice, nome e quantità di tutti i prodotti che sono cibi e che scadono entro il 28 febbraio 2019, che inoltre iniziano con la R, ordinati in modo decrescente.
-    \item [Operazione 8:] stampa il codice, il nome, la marca e l’annata di tutti i vini con annata risalente a massimo il 2008 e prezzo inferiore a 20 euro ordinati per prezzo crescente.
-    \item [Operazione 9:] stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 o 4 coperti.
-    \item [Operazione 10:] stampa nome e cognome di tutti i dipendenti di turno il martedì.
-    \item [Operazione 11:] calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite.
-    \item [Operazione 12:] trova il cameriere che effettua più ordini in media al giorno per decidere se promuoverlo o no.
+    \item [Operazione 8:] stampare il codice, il nome, la marca e l’annata di tutti i vini con annata risalente a massimo il 2008 e prezzo inferiore a 20 euro ordinati per prezzo crescente.
+    \item [Operazione 9:] stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 e 5 coperti.
+    \item [Operazione 10:] stampare nome e cognome di tutti i dipendenti di turno il martedì, raggruppati per ruolo il cui stipendio medio è maggiore di 2000.
+    \item [Operazione 11:] calcolare il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite.
+    \item [Operazione 12:] trovare il cameriere che effettua più ordini in media al giorno per decidere se promuoverlo o no.
 \end{description}
 
 \subsection{Strutturazione dei requisiti} 
@@ -122,7 +124,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     il tipo.
     Per i vini i tipi possono essere rosso, bianco fermo, rosè, frizzante, passito. Per i
     superalcolici i tipi sono grappa, amaro, whisky, rum, aperol.
-    Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza.\\ \hline
+    Per i prodotti da frigo, o freschi, si vuole inoltre conoscere la data di scadenza. Ogni prodotto è acquistato presso un solo fornitore di fiducia.\\ \hline
 \end{longtable}
 
 \begin{longtable}{|p{17cm}|}
@@ -157,7 +159,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
 \begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a prenotazione} \\ \hline
-    Ogni prenotazione ha: un nome del cliente prenotante, il giorno della prenotazione, l'ora della prenotazione, un numero di persone al tavolo. 
+    Ogni prenotazione ha: un nome del cliente prenotante, il giorno della prenotazione, l'ora della prenotazione, un numero di persone al tavolo e il numero del tavolo. 
     Ogni prenotazione è identificata univocamente da giorno, ora e numero del tavolo.
     Il numero di persone per tavolo non può superare il numero di coperti disponibili per
     quel tavolo.
@@ -184,9 +186,10 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
 \begin{longtable}{|p{17 cm}|}
     \hline
     \textbf{Frasi relative a turni di lavoro} \\ \hline
-    Ogni turno di lavoro ha: un codice del dipendente ed un giorno. \\
-    Ogni turno di lavoro viene identificato univocamente dal giorno.
+    Ogni turno di lavoro ha: un codice del dipendente, un giorno ed una data. \\
+    Ogni turno di lavoro viene identificato univocamente dalla data.
     Ogni turno di lavoro comprende l’intera giornata, senza distinzione tra pranzo e cena.
+    In ogni turno di lavoro devono essere presenti almeno un cuoco, un cameriere ed un sommelier.
     \\ \hline
 \end{longtable}
 
@@ -198,7 +201,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
 \begin{itemize}
     \item Un dipendente non può svolgere più di 6 turni a settimana.
     \item Un cliente non può prenotare un tavolo già prenotato.
-    \item Il numero del tavolo deve essere compreso tra 1 e 35.
+    \item Il numero del tavolo deve essere compreso tra 1 e 20.
     \item La quantità del prodotto non può essere negativa.
 \end{itemize}
 
@@ -222,7 +225,7 @@ Ogni turno di lavoro comprende l'intera giornata, senza distinzione tra pranzo e
     Cuoco & Dipendente addetto alla cucina & Eredita da personale & CodiceFiscale\\ \midrule
     Sommelier & Dipendente addetto alla mescita degli alcolici & Eredita da personale & CodiceFiscale\\ \midrule
     Cameriere & Dipendente che serve ai tavoli & Eredita da personale & CodiceFiscale\\ \midrule
-    Turno & Turno di lavoro & Giorno & Giorno\\ 
+    Turno & Turno di lavoro & Giorno, Data & Data\\ 
     \bottomrule	
 \end{longtable}
 \textbf{Lista delle relazioni} 

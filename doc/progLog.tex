@@ -21,21 +21,25 @@
 \textbf{Uscita}(\underline{CodiceUscita},Costo, Data, Causale), \\ \smallskip
 \textbf{Stipendio}( \underline{CodiceUscita}, \underline{CodiceFiscale} ), \\ \smallskip
 \textbf{Entrata}(\underline{CodiceEntrata}, Costo, Data), \\ \smallskip
-\textbf{Personale}(\underline{CodiceFiscale}, Nome, Cognome, Ruolo, GiornoLibero), \\ \smallskip
-\textbf{Turno}(\underline{Giorno}), \\ \smallskip
-\textbf{Svolgimento}(\underline{Giorno}, \underline{CodiceFiscale}), \\ \smallskip
+\textbf{Personale}(\underline{CodiceFiscale}, Nome, Cognome, Ruolo, GiornoLibero, Stipendio), \\ \smallskip
+\textbf{Turno}(\underline{DatTurno}, Giorno), \\ \smallskip
+\textbf{Svolgimento}(\underline{DatTurno}, \underline{CodiceFiscale}), \\ \smallskip
 \textbf{Ordine}(\underline{CodiceOrdine}, NumeroPersone, Giorno, Ora, ContoTotale, NumeroTavolo, CodiceCameriere), \\ \smallskip 
 \textbf{Tavolo}(\underline{NumeroTavolo}, Coperti), \\ \smallskip
-\textbf{Prenotazione}(\underline{CodicePren}, NumeroCoperti, Cliente, Giorno, Ora, NumeroTavolo)
+\textbf{Prenotazione}(\underline{CodicePren}, NumeroCoperti, Cliente, Giorno, Ora, NumeroTavolo)\\
 
-\section{Lista dei vincoli di integrità referenziale}
+\noindent
+Poichè la relazione che comprende Turni e Personale ha cardinalità molti a molti, si è deciso di aggiungere una relazione "Svolgimento" che ha lo stesso nome della associazione che collega i due. \newline
+Si è deciso di fare lo stesso con la relazione che coinvolge Uscita e Personale creando la relazione "Stipendio".
+
+\subsection{Lista dei vincoli di integrità referenziale}
 \begin{itemize}
     \item Fra l'attributo PartitaIVA della relazione Fornitore e l'attributo IVAFornitore della relazione Prodotto.
     \item Fra l'attributo CodiceUscita della relazione Uscita e l'attributo Prezzo della relazione Prodotto.
     \item Fra l'attributo CodiceUscita della relazione Uscita e la relazione Stipendio.
     \item Fra l'attributo CodiceFiscale della relazione Stipendio e la relazione Personale.
     \item Fra l'attributo CodiceEntrata della relazione Entrata e l'attributo ContoTotale della relazione Ordine.
-    \item Fra l'attributo Giorno della relazione Turno e la relazione Svolgimento.
+    \item Fra l'attributo DataTurno della relazione Turno e la relazione Svolgimento.
     \item Fra l'attributo CodiceFiscale della relazione Svolgimento e la relazione Personale.
     \item Fra l'attributo CodiceFiscale della relazione Personale e l'attributo CodiceCameriere della relazione Ordine.
     \item Fra l'attributo NumeroTavolo della relazione Tavolo e la relazione Ordine.

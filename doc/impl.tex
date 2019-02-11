@@ -38,12 +38,17 @@ ORDER BY V.Prezzo;
 +----------------+--------------+---------------------+--------+  
 \end{lstlisting}
 \begin{lstlisting}[title=Operazione 9, style=mysqlStyle]
--- stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 o 4 coperti --
+-- stampa il numero dei tavoli liberi nel giorno 20/02/2019 che non hanno 3 e 5 coperti --
+
+CREATE VIEW tavoli3o5Coperti as
+SELECT NumeroTavolo AS num
+FROM tavolo AS T JOIN prenotazione AS P ON T.NumeroTavolo = P.NumeroTavolo
+WHERE T.Coperti = 3 OR T.Coperti = 5 AND P.Giorno='2019-02-20'
 
 CREATE VIEW tavoliLiberi as
 SELECT T.NumeroTavolo
 FROM tavolo AS T
-WHERE T.NumeroTavolo NOT IN (SELECT P.NumeroTavolo FROM prenotazione AS P WHERE P.Giorno='2019-02-20') AND T.Coperti > 4 OR T.Coperti < 3;
+WHERE T.NumeroTavolo NOT IN (SELECT num FROM tavoli3o5Coperti) 
 \end{lstlisting}
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 +--------------+  
@@ -64,12 +69,14 @@ WHERE T.NumeroTavolo NOT IN (SELECT P.NumeroTavolo FROM prenotazione AS P WHERE 
 +--------------+  
 \end{lstlisting}
 \begin{lstlisting}[title=Operazione 10, style=mysqlStyle]
--- stampa nome e cognome di tutti i dipendenti di turno il martedi --
+-- stampa nome e cognome di tutti i dipendenti di turno il martedi, raggruppati per ruolo il cui stipendio medio e' maggiore di 2000 --
 
 CREATE VIEW dipendentiDiTurno as
 SELECT DISTINCT P.Nome, P.Cognome
-FROM personale AS P, svolgimentoTurno AS T
-WHERE T.CodiceFiscale=P.CodiceFiscale AND T.Giorno = 'Martedi';
+FROM personale AS P, svolgimento_turno AS T, turno AS Tr
+WHERE T.CodiceFiscale=P.CodiceFiscale AND Tr.Giorno = 'Martedi' AND Tr.DataTurno=T.DataTurno
+GROUP BY P.Ruolo
+HAVING P.Stipendio >= 2000;
 \end{lstlisting}
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 +---------+------------+  
@@ -100,11 +107,11 @@ DELIMITER ;
 --modificare la quantita di un prodotto --
 
 DELIMITER |
-CREATE PROCEDURE modificaQuantita (IN codice INTEGER, IN quantita INTEGER)
+CREATE PROCEDURE modificaQuantita (IN codiceProd INTEGER, IN quantita INTEGER)
 BEGIN
     UPDATE prodotto AS P
     SET P.Quantita = P.Quantita + quantita
-    WHERE P.CodiceProdotto=codice;
+    WHERE P.CodiceProdotto=codice; 
 END |
 DELIMITER ;
 \end{lstlisting}
@@ -124,12 +131,12 @@ DELIMITER ;
 \end{lstlisting}
 
 \begin{lstlisting}[title=Operazione 4, style=mysqlStyle]
--- cancellazione di una prenotazione --
+-- cancella prenotazione solo se la prenotazione e' successiva alla data corrente --
 
 DELIMITER |
 CREATE PROCEDURE eliminaPrenotazione (IN codice INTEGER)
 BEGIN
-    DELETE FROM prenotazione WHERE CodicePrenotazione=codice;
+    DELETE FROM prenotazione WHERE CodicePrenotazione=codice AND Giorno > CURDATE();
 END |
 DELIMITER ;
 \end{lstlisting}
@@ -150,15 +157,14 @@ DELIMITER ;
 -- modifica turno di lavoro --
 
 DELIMITER |
-CREATE PROCEDURE modificaTurno (IN giorno VARCHAR(10), IN dipendente VARCHAR(20))
+CREATE PROCEDURE modificaTurno (IN dataTurno date, IN dipendente VARCHAR(20))
 BEGIN
     UPDATE svolgimento_turno SET CodiceFiscale=dipendente
-    WHERE Giorno=giorno;
+    WHERE DataTurno=dataTurno;
 END |
 DELIMITER ;
 \end{lstlisting}
 
-\newpage
 \subsection{Funzioni} %almeno 2 funzioni
 \begin{lstlisting}[title=Operazione 11, style=mysqlStyle]
 -- calcola il guadagno mensile dato dalla differenza tra la somma delle entrate e la somma delle uscite --
@@ -184,7 +190,7 @@ END |
 \end{lstlisting}
 
 \begin{lstlisting}[title=Operazione 12, style=mysqlStyle]
--- trova il cameriere che effettua piu ordini in media al giorno per decidere se promuoverlo --
+-- trova il cameriere che effettua piu' ordini in media al giorno per decidere se promuoverlo --
 
 CREATE FUNCTION promozione (mese DATE, cameriere VARCHAR(20)) RETURNS BOOL
 BEGIN
@@ -205,7 +211,7 @@ END |
 
 \subsection{Trigger} %almeno 2 trigger
 \begin{lstlisting}[title=Regola di vincolo 1, style=mysqlStyle]
--- un dipendente non puo lavorare nel suo giorno libero--
+-- un dipendente non puo' lavorare nel suo giorno libero--
 
 CREATE TRIGGER noGiorniLiberi
 BEFORE INSERT ON svolgimentoTurno
@@ -217,14 +223,14 @@ BEGIN
     FROM personale AS P;
     
     IF giornoLibero NOT IN (SELECT T.Giorno FROM personale AS P, svolgimentoTurno AS T WHERE P.CodiceFiscale=T.CodiceFiscale)
-    THEN CALL modificaTurno(new.giorno, new.dipendente);
+    THEN CALL modificaTurno(new.dataTurno, new.dipendente);
     END IF;
 END |
 DELIMITER ;
 \end{lstlisting}
 
 \begin{lstlisting}[title=Regola di vincolo 2, style=mysqlStyle]
--- un dipendente non puo svolgere piu di 6 turni a settimana --
+-- un dipendente non puo' svolgere piu' di 6 turni a settimana --
 
 DELIMITER |
 CREATE TRIGGER MaxTurni
@@ -243,7 +249,7 @@ END |
 DELIMITER ;
 \end{lstlisting}
 \begin{lstlisting}[title=Regola di vincolo 3, style=mysqlStyle]
--- un cliente non puo prenotare un tavolo gia prenotato --
+-- un cliente non puo' prenotare un tavolo gia' prenotato --
 
 DELIMITER |
 CREATE TRIGGER tavoliPrenotati
